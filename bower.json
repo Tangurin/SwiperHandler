@@ -1,0 +1,27 @@
+{
+  "name": "SwiperHandler",
+  "main": "SwiperHandler.js",
+  "homepage": "https://github.com/Tangurin/SwiperHandler",
+  "authors": [
+    "Albert <albert@engvie.se>"
+  ],
+  "description": "JavaScript Class handling Swipers from DOM",
+  "keywords": [
+    "Swiper",
+    "Handler",
+    "DOM"
+  ],
+  "dependencies": {
+    "jquery": ">=1.7.1",
+    "swiper": "^4.0"
+  },
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

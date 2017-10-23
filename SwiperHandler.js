@@ -101,11 +101,13 @@
                 newSettings.centeredSlides = true;
             }
 
-            var prevButton = newSettings.prevButton || '.swiper-button-prev'; 
-            var nextButton = newSettings.nextButton || '.swiper-button-next'; 
+            //Add empty navigation if not exists
+            newSettings.navigation = newSettings.navigation || {};
+            //Add current swiper-selector before prev/next nav button
+            newSettings.navigation.prevButton = swiper.selector + ' ' + (newSettings.navigation.prevEl || '.swiper-button-prev');
+            newSettings.navigation.nextButton = swiper.selector + ' ' + (newSettings.navigation.nextEl || '.swiper-button-next');
 
-            newSettings.prevButton = swiper.selector + ' ' + prevButton;
-            newSettings.nextButton = swiper.selector + ' ' + nextButton;
+            console.log(newSettings);
 
             return newSettings;
         },

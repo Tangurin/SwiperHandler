@@ -107,8 +107,6 @@
             newSettings.navigation.prevButton = swiper.selector + ' ' + (newSettings.navigation.prevEl || '.swiper-button-prev');
             newSettings.navigation.nextButton = swiper.selector + ' ' + (newSettings.navigation.nextEl || '.swiper-button-next');
 
-            console.log(newSettings);
-
             return newSettings;
         },
         getBreakpoint: function(id) {

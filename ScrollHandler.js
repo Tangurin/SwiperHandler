@@ -137,6 +137,8 @@
             });
         },
     };
+    
+    window.SwiperHandler = SwiperHandler;
 })();
 
 /*===========================

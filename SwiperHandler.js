@@ -1,5 +1,7 @@
 (function () {
     'use strict';
+    var Swiper = require('swiper');
+
     /*===========================
     SwiperHandler
     ===========================*/

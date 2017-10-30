@@ -78,7 +78,7 @@
                 if (syncGroup) {
                     SwiperHandler._each(function(iterationSwiperId, iterationSwiper) {
                         if (swiperId != iterationSwiperId && iterationSwiper.settings.syncGroup == syncGroup) {
-                            swiper.instance.params.control = iterationSwiper.instance;
+                            swiper.instance.controller.control = iterationSwiper.instance;
                         }
                     });
                 }

@@ -112,7 +112,7 @@
         getBreakpoint: function(id) {
             var swiper = SwiperHandler.swipers[id];
 
-            for (width in swiper.settings.breakpoints) {
+            for (var width in swiper.settings.breakpoints) {
               if (SwiperHandler.window.width() <= width) {
                 return width;
               }

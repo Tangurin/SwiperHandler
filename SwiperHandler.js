@@ -104,8 +104,8 @@
             //Add empty navigation if not exists
             newSettings.navigation = newSettings.navigation || {};
             //Add current swiper-selector before prev/next nav button
-            newSettings.navigation.prevButton = swiper.selector + ' ' + (newSettings.navigation.prevEl || '.swiper-button-prev');
-            newSettings.navigation.nextButton = swiper.selector + ' ' + (newSettings.navigation.nextEl || '.swiper-button-next');
+            newSettings.navigation.prevEl = swiper.selector + ' ' + (newSettings.navigation.prevEl || '.swiper-button-prev');
+            newSettings.navigation.nextEl = swiper.selector + ' ' + (newSettings.navigation.nextEl || '.swiper-button-next');
 
             return newSettings;
         },

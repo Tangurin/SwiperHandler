@@ -7,23 +7,21 @@
     ===========================*/
     var SwiperHandler = {
         window: null,
+        swiperId: 1,
         swipers: {},
         initialized: false,
         initialize: function() {
-            if (SwiperHandler.initialized) {
-                return false;
-            }
-
-            SwiperHandler.window = $(window);
-            var swiperId = 1;
-
+            var self = this;
             $('.initSwiper').each(function() {
                 var $this = $(this);
-                var idAttribute = 'swiperId-'+ swiperId;
+                if ($this.hasClass('initialized')) {
+                    return true;
+                }
+                var idAttribute = 'swiperId-'+ self.swiperId;
                 var selector = '#'+ idAttribute;
 
                 $this.attr('id', idAttribute);
-                SwiperHandler.swipers[swiperId] = {
+                SwiperHandler.swipers[self.swiperId] = {
                     selector: selector,
                     swiperSelector: selector +' .swiper-container',
                     element: $this,
@@ -32,15 +30,18 @@
                     currentBreakpoint: 0,
                     amountOfSlides: $('.swiper-slide', $this).length,
                 };
-                swiperId++;
+                self.swiperId++;
             });
 
-            SwiperHandler.buildAll();
+            if (SwiperHandler.initialized === false) {
+                SwiperHandler.window = $(window);
+                SwiperHandler.window.resize(function() {
+                    clearTimeout(SwiperHandler.window.resizedFinished);
+                    SwiperHandler.window.resizedFinished = setTimeout(SwiperHandler.rebuildOnResize, 250);
+                });
+            }
 
-            SwiperHandler.window.resize(function() {
-                clearTimeout(SwiperHandler.window.resizedFinished);
-                SwiperHandler.window.resizedFinished = setTimeout(SwiperHandler.rebuildOnResize, 250);
-            });
+            SwiperHandler.buildAll(true);
 
             SwiperHandler.initialized = true;
         },
@@ -56,21 +57,23 @@
 
             SwiperHandler.syncSwipers();
         },
-        buildAll: function() {
+        buildAll: function(dontDestroy) {
             SwiperHandler._each(function(swiperId, swiper) {
-                SwiperHandler.build(swiperId);
+                SwiperHandler.build(swiperId, dontDestroy);
             });
 
             SwiperHandler.syncSwipers();
         },
-        build: function(id) {
+        build: function(id, dontDestroy) {
+            var dontDestroy = dontDestroy || false;
             var swiper = SwiperHandler.swipers[id];
 
-            if (swiper.instance != null) {
+            if (dontDestroy === false && swiper.instance != null) {
                 SwiperHandler.destroy(id);
             }
 
             swiper.instance = new Swiper(swiper.swiperSelector, SwiperHandler.getSettings(id));
+            swiper.element.addClass('initialized');
         },
         syncSwipers: function() {
             SwiperHandler._each(function(swiperId, swiper) {

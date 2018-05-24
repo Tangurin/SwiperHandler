@@ -1,6 +1,9 @@
 (function () {
     'use strict';
     var Swiper = require('swiper');
+    if (typeof Swiper.default != 'undefined') {
+        Swiper = Swiper.default;
+    }
 
     /*===========================
     SwiperHandler

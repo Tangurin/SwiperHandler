@@ -76,6 +76,7 @@
             }
 
             swiper.instance = new Swiper(swiper.swiperSelector, SwiperHandler.getSettings(id));
+            SwiperHandler.pauseOnHover(id);
             swiper.element.addClass('initialized');
         },
         syncSwipers: function() {
@@ -89,6 +90,19 @@
                     });
                 }
             });
+        },
+        pauseOnHover: function(id) {
+            var swiper = SwiperHandler.swipers[id];
+            if ( ! swiper.settings.pauseOnHover || swiper.instance.autoplay.running == false ) {
+                return;
+            }
+
+            swiper.element.on('mouseover', function() {
+                swiper.instance.autoplay.stop();
+            });
+            swiper.element.on('mouseleave', function() {
+                swiper.instance.autoplay.start();
+            })
         },
         getSettings: function(id) {
             var swiper = SwiperHandler.swipers[id];

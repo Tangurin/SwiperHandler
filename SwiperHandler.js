@@ -84,7 +84,7 @@
                 var syncGroup = swiper.settings.syncGroup;
                 if (syncGroup) {
                     SwiperHandler._each(function(iterationSwiperId, iterationSwiper) {
-                        if (swiperId != iterationSwiperId && iterationSwiper.settings.syncGroup == syncGroup) {
+                        if (swiper.instance.controller && swiperId != iterationSwiperId && iterationSwiper.settings.syncGroup == syncGroup) {
                             swiper.instance.controller.control = iterationSwiper.instance;
                         }
                     });
@@ -93,7 +93,7 @@
         },
         pauseOnHover: function(id) {
             var swiper = SwiperHandler.swipers[id];
-            if ( ! swiper.settings.pauseOnHover || swiper.instance.autoplay.running == false ) {
+            if ( ! swiper.settings.pauseOnHover || (swiper.instance.autoplay && swiper.instance.autoplay.running == false) ) {
                 return;
             }
 

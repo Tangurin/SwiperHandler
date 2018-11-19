@@ -123,26 +123,26 @@
         },
         getSettings: function(id) {
             var swiper = SwiperHandler.swipers[id];
-            var settings = swiper.settings || {};
-            var newSettings = settings.default || {};
-            var breakpoint = SwiperHandler.getBreakpoint(id);
-            var breakpointSettings = {};
+            //Make sure there is a default navigation config
+            var navigation = swiper.settings.default.navigation || {};
+            navigation.prevEl = swiper.selector + ' ' + (navigation.prevEl || '.swiper-button-prev'),
+            navigation.nextEl = swiper.selector + ' ' + (navigation.nextEl || '.swiper-button-next'),
+            SwiperHandler.swipers[id].settings.default.navigation = navigation;
 
-            swiper.currentBreakpoint = breakpoint;
-            if (breakpoint > 0) {
-                breakpointSettings = swiper.settings.breakpoints[breakpoint];
+            var settings = swiper.settings || {};
+
+            var breakpointSettings = {};
+            swiper.currentBreakpoint = SwiperHandler.getBreakpoint(id);
+            if (swiper.currentBreakpoint > 0) {
+                breakpointSettings = swiper.settings.breakpoints[swiper.currentBreakpoint];
             }
+            
+            var newSettings = settings.default || {};
             newSettings = $.extend({}, newSettings, breakpointSettings);
 
             if (settings.centerSlidesIfTooFew && swiper.amountOfSlides < newSettings.slidesPerView) {
                 newSettings.centeredSlides = true;
             }
-
-            //Add empty navigation if not exists
-            newSettings.navigation = newSettings.navigation || {};
-            //Add current swiper-selector before prev/next nav button
-            newSettings.navigation.prevEl = swiper.selector + ' ' + (newSettings.navigation.prevEl || '.swiper-button-prev');
-            newSettings.navigation.nextEl = swiper.selector + ' ' + (newSettings.navigation.nextEl || '.swiper-button-next');
 
             return newSettings;
         },

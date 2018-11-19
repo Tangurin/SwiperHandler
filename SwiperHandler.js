@@ -82,13 +82,13 @@
             SwiperHandler.pauseOnHover(id);
             swiper.element.addClass('initialized');
         },
-        syncSwipers: function() {
+        findSyncs () {
             SwiperHandler._each(function(swiperId, swiper) {
                 var syncGroup = swiper.settings.syncGroup;
                 if (syncGroup) {
                     SwiperHandler._each(function(iterationSwiperId, iterationSwiper) {
-                        if (swiper.instance.controller && swiperId != iterationSwiperId && iterationSwiper.settings.syncGroup == syncGroup) {
-                            swiper.instance.controller.control = iterationSwiper.instance;
+                        if (swiperId != iterationSwiperId && iterationSwiper.settings.syncGroup == syncGroup) {
+                            swiper.syncsWith.push(parseInt(iterationSwiperId));
                         }
                     });
                 }

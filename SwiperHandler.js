@@ -31,10 +31,13 @@
                     settings: eval('(' + $this.attr('data-swiper-settings') + ')'),
                     instance: null,
                     currentBreakpoint: 0,
+                    syncsWith: [],
                     amountOfSlides: $('.swiper-slide', $this).length,
                 };
                 self.swiperId++;
             });
+
+            SwiperHandler.findSyncs();
 
             if (SwiperHandler.initialized === false) {
                 SwiperHandler.window = $(window);
@@ -58,14 +61,14 @@
                 }
             });
 
-            SwiperHandler.syncSwipers();
+            SwiperHandler.onAllSwipersBuilt();
         },
         buildAll: function(dontDestroy) {
             SwiperHandler._each(function(swiperId, swiper) {
                 SwiperHandler.build(swiperId, dontDestroy);
             });
 
-            SwiperHandler.syncSwipers();
+            SwiperHandler.onAllSwipersBuilt();
         },
         build: function(id, dontDestroy) {
             var dontDestroy = dontDestroy || false;
@@ -90,6 +93,10 @@
                     });
                 }
             });
+        },
+        onAllSwipersBuilt: function() {
+            SwiperHandler.syncSwipers();
+            SwiperHandler.bindEvents();
         },
         pauseOnHover: function(id) {
             var swiper = SwiperHandler.swipers[id];

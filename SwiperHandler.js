@@ -32,6 +32,7 @@
                     instance: null,
                     currentBreakpoint: 0,
                     syncsWith: [],
+                    allowAutoplay: true,
                     amountOfSlides: $('.swiper-slide', $this).length,
                 };
                 self.swiperId++;
@@ -108,18 +109,70 @@
                 }
             });
         },
+        bindEvents () {
+            SwiperHandler._each(function(swiperId, swiper) {
+                swiper.instance.on('click touchEnd', function(e) {
+                    SwiperHandler.toggleAutoplay(swiperId, false, true);
+                    SwiperHandler.toggleAutoplayOnSynced(swiperId, false, true);
+                });
+
+                $(swiper.settings.default.navigation.prevEl +','+ swiper.settings.default.navigation.nextEl).on('click', function() {
+                    SwiperHandler.toggleAutoplay(swiperId, false, true);
+                    SwiperHandler.toggleAutoplayOnSynced(swiperId, false, true);
+                });
+            });
+        },
         pauseOnHover: function(id) {
             var swiper = SwiperHandler.swipers[id];
-            if ( ! swiper.settings.pauseOnHover || (swiper.instance.autoplay && swiper.instance.autoplay.running == false) ) {
+            if ( ! swiper.settings.pauseOnHover) {
                 return;
             }
 
             swiper.element.on('mouseover', function() {
-                swiper.instance.autoplay.stop();
+                SwiperHandler.toggleAutoplay(id, false);
+                SwiperHandler.toggleAutoplayOnSynced(id, false);
             });
+
             swiper.element.on('mouseleave', function() {
-                swiper.instance.autoplay.start();
+                if (swiper.allowAutoplay) {
+                    SwiperHandler.toggleAutoplay(id, true);
+                    SwiperHandler.toggleAutoplayOnSynced(id, true);
+                }
             })
+        },
+        toggleAutoplay: function(id, play, removeAutoPlay) {
+            var swiper = SwiperHandler.swipers[id];
+            var play = play || false;
+            var removeAutoPlay = removeAutoPlay || false;
+
+            if (play) {
+                swiper.instance.autoplay.start();
+            } else {
+                swiper.instance.autoplay.stop();
+            }
+
+            if (removeAutoPlay) {
+                swiper.allowAutoplay = false;
+            }
+        },
+        toggleAutoplayOnSynced (id, play, removeAutoPlay) {
+            var swiper = SwiperHandler.swipers[id];
+            var play = play || false;
+            var removeAutoPlay = removeAutoPlay || false;
+
+            for (var i in swiper.syncsWith) {
+                var syncedSwiper = SwiperHandler.swipers[ swiper.syncsWith[i] ];
+
+                if (play) {
+                    syncedSwiper.instance.autoplay.start();
+                } else {
+                    syncedSwiper.instance.autoplay.stop();
+                }
+
+                if (removeAutoPlay) {
+                    syncedSwiper.allowAutoplay = false;
+                }
+            }
         },
         getSettings: function(id) {
             var swiper = SwiperHandler.swipers[id];

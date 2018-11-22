@@ -103,7 +103,7 @@
             SwiperHandler._each(function(swiperId, swiper) {
                 for (var i in swiper.syncsWith) {
                     var syncsWithSwiper = SwiperHandler.swipers[ swiper.syncsWith[i] ];
-                    if (syncsWithSwiper.instance.controller) {
+                    if (syncsWithSwiper.instance.controller && swiper.instance.controller) {
                         swiper.instance.controller.control = syncsWithSwiper.instance;
                     }
                 }

@@ -145,6 +145,10 @@
             var play = play || false;
             var removeAutoPlay = removeAutoPlay || false;
 
+            if (!swiper.instance.autoplay) {
+                return;
+            }
+
             if (play) {
                 swiper.instance.autoplay.start();
             } else {
@@ -162,6 +166,10 @@
 
             for (var i in swiper.syncsWith) {
                 var syncedSwiper = SwiperHandler.swipers[ swiper.syncsWith[i] ];
+
+                if (!syncedSwiper.instance.autoplay) {
+                    return;
+                }
 
                 if (play) {
                     syncedSwiper.instance.autoplay.start();

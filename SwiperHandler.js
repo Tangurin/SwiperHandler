@@ -16,26 +16,7 @@
         initialize: function() {
             var self = this;
             $('.initSwiper').each(function() {
-                var $this = $(this);
-                if ($this.hasClass('initialized')) {
-                    return true;
-                }
-                var idAttribute = 'swiperId-'+ self.swiperId;
-                var selector = '#'+ idAttribute;
-
-                $this.attr('id', idAttribute);
-                SwiperHandler.swipers[self.swiperId] = {
-                    selector: selector,
-                    swiperSelector: selector +' .swiper-container',
-                    element: $this,
-                    settings: eval('(' + $this.attr('data-swiper-settings') + ')'),
-                    instance: null,
-                    currentBreakpoint: 0,
-                    syncsWith: [],
-                    allowAutoplay: true,
-                    amountOfSlides: $('.swiper-slide', $this).length,
-                };
-                self.swiperId++;
+                SwiperHandler.prepareSwiper($(this));
             });
 
             SwiperHandler.findSyncs();
@@ -51,6 +32,30 @@
             SwiperHandler.buildAll(true);
 
             SwiperHandler.initialized = true;
+        },
+        prepareSwiper: function($this) {
+            if ($this.hasClass('initialized')) {
+                return true;
+            }
+            var swiperId = SwiperHandler.swiperId;
+            var idAttribute = 'swiperId-' + swiperId;
+            var selector = '#'+ idAttribute;
+
+            $this.attr('id', idAttribute);
+            SwiperHandler.swipers[swiperId] = {
+                selector: selector,
+                swiperSelector: selector +' .swiper-container',
+                element: $this,
+                settings: eval('(' + $this.attr('data-swiper-settings') + ')'),
+                instance: null,
+                currentBreakpoint: 0,
+                syncsWith: [],
+                allowAutoplay: true,
+                amountOfSlides: $('.swiper-slide', $this).length,
+            };
+            SwiperHandler.swiperId++;
+
+            return swiperId;
         },
         rebuildOnResize: function() {
             SwiperHandler._each(function(swiperId, swiper) {
